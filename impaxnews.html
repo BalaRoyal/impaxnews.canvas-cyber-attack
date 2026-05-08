@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IMPAXNEWS - Breaking News & Latest Updates</title>
+  <meta name="description" content="Read latest news and updates on IMPAXNEWS. Modern journalism with fast updates and trending stories.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --primary: #ff6600;
+      --primary-dark: #c64000;
+      --black: #202121;
+      --gray: #666;
+      --lightgray: #f6f7fa;
+      --cardwhite: #fff;
+      --border: #ececec;
+      --radius: 17px;
+      --shadow: 0 4px 23px 0 rgba(34,34,34,0.07);
+      --maxw: 640px;
+      --font: 'Segoe UI', Arial, sans-serif;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; background: var(--lightgray);
+      font-family: var(--font);
+      color: var(--black);
+    }
+    body {
+      min-height: 100vh;
+    }
+    .sticky-header {
+      background: var(--cardwhite);
+      border-bottom: 1.5px solid var(--border);
+      position: sticky; top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 9px 0 rgba(78,78,78,0.03);
+    }
+    .impax-header {
+      max-width: var(--maxw);
+      margin: auto;
+      min-height: 1px;
+      padding: 1.09rem 0 0.83rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--cardwhite);
+    }
+    .impax-logo-row {
+      display: flex; align-items: center;
+      gap: 0.7rem; margin-bottom: 0.18rem;
+      justify-content: center;
+    }
+    .impax-logo-text {
+      font-size: 2.13rem;
+      letter-spacing: -2px;
+      font-family: inherit;
+      font-weight: 800;
+      color: #111;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -2px;
+    }
+    .impax-logo-text-orange { color: var(--primary);}
+    .impax-tagline {
+      margin-top: -.19rem;
+      font-size: 1.01rem;
+      color: #333;
+      letter-spacing: .20px;
+      text-align:center;
+      font-weight: 500;
+      opacity: 0.89;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+    .main-wrap {
+      display: flex; justify-content: center; width: 100%;
+    }
+    .news-card {
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 1.7rem 0 2rem 0;
+      border-radius: var(--radius);
+      background: var(--cardwhite);
+      box-shadow: var(--shadow);
+      padding: 0 0 2.3rem 0;
+      border: 1.4px solid var(--border);
+      overflow: hidden;
+    }
+    .news-img-wrap {
+      width: 100%;
+      min-height: 180px;
+      position: relative;
+      background: linear-gradient(135deg, #292828 60%, #ff6600 100%); /* fallback */
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      overflow: hidden;
+      border-radius: var(--radius) var(--radius) 0 0;
+      margin:0;
+      aspect-ratio:16/8;
+    }
+    .news-img-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(105deg,rgba(0,0,0,0.47) 58%,rgba(255,102,0,0.15) 99%);
+      z-index: 2;
+      pointer-events:none;
+    }
+    .news-img-real {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 180px;
+      background: #232323;
+      display:block;
+      filter:brightness(0.78) blur(0.3px);
+    }
+    .news-img-text {
+      position: absolute;
+      left: 0; right: 0; top: 44%; 
+      width: 100%;
+      color: #fff;
+      z-index: 3;
+      font-weight: 900;
+      font-size: 1.29rem;
+      text-align: center;
+      letter-spacing: .035em;
+      text-shadow: 0 3px 20px #000,0 1px 2px #000;
+      line-height:1.25;
+      padding: 0 1.2rem;
+      user-select: none;
+    }
+    .news-title {
+      font-size: 2.05rem;
+      font-weight: 800;
+      line-height: 1.13;
+      color: #181818;
+      margin: 1.5rem 1.6rem 1.05rem 1.6rem;
+      letter-spacing: -0.9px;
+    }
+    .news-meta-row {
+      display: flex; gap: .62rem; align-items: center; flex-wrap: wrap;
+      margin: 0 1.6rem 0.8rem 1.6rem;
+    }
+    .news-meta {
+      background: #f3f4f8;
+      color: #7c7c7c;
+      border-radius: 2em;
+      font-size: 0.99rem;
+      padding: 0.39em 1.05em;
+      font-weight: 500; display: flex; align-items: center; gap: 0.37em;
+    }
+    .news-meta.critical {
+      color: #ff5757;
+      background: #ffe9e0;
+      font-weight: 600;
+    }
+    .social-row {
+      display: flex;
+      gap: 0.74rem;
+      margin: 0.65rem 1.6rem 1.18rem 1.6rem;
+    }
+    .share-btn {
+      background: var(--lightgray);
+      border-radius: 50%;
+      border: 1.2px solid #ededed;
+      width: 42px; height: 42px;
+      font-size: 1.28rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--primary-dark);
+      transition: background .15s, color .17s, border .14s, box-shadow .16s;
+      cursor: pointer;
+      box-shadow: 0 2px 10px 0 rgba(200,200,200,0.09);
+      outline: none;
+    }
+    .share-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border: 1.2px solid var(--primary);
+      box-shadow: 0 1px 7px 0 rgba(255,100,20,0.08);
+    }
+
+    .article-content {
+      font-size: 1.15rem;
+      line-height: 1.91;
+      color: #232323;
+      font-family: inherit;
+      margin: 0 1.6rem;
+    }
+    .article-content p {
+      margin: 1.32rem 0;
+    }
+
+    /* PROMO BANNERS */
+    .promo-banner {
+      border-radius: var(--radius);
+      margin: 2.2rem 0;
+      padding: 1.13rem 1.13rem 1.26rem 1.13rem;
+      box-shadow: 0 6px 30px -4px rgba(255,110,70,0.10);
+      display: flex; flex-direction: row; gap: 1em; align-items: center;
+      flex-wrap: wrap; position: relative; overflow: hidden;
+    }
+    .promo-banner .banner-icon {
+      font-size: 2.45rem;
+      border-radius: 11px;
+      padding: 10px;
+      min-width: 43px; min-height: 43px;
+      display: flex; align-items: center; justify-content: center;
+      margin-right: 1.2rem; background:none;
+    }
+    .promo-banner-content h4 {
+      font-size: 1.09rem;
+      font-weight: 900;
+      margin: 0 0 0.18rem 0;
+      letter-spacing: -.02px;
+    }
+    .promo-banner-content ul {
+      list-style: disc inside;
+      margin: .24rem 0 .5rem 0;
+      padding: 0 0 0 0.5rem;
+      font-size: 1.01rem;
+    }
+    .promo-banner-content li {
+      margin-bottom: 0.14em;
+    }
+    .cta-banner-btn {
+      display: inline-block;
+      margin-top: .68rem;
+      font-size: 0.99rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--white);
+      border: none;
+      border-radius: 20px;
+      padding: 0.49rem 1.7rem;
+      cursor: pointer;
+      transition: background .18s, color .18s, transform .13s;
+      box-shadow: 0 1px 8px 0 rgba(255,121,0,0.10);
+      text-decoration: none;
+      letter-spacing: .09px;
+    }
+    .cta-banner-btn:hover {
+      background: var(--primary-dark);
+      color: #fff;
+      transform: scale(1.035);
+    }
+
+    /* EasyToolsFlow Full Poster */
+    .etf-poster-wrap {
+      width: 100%;
+      display: flex; justify-content: center;
+      margin: 3.2rem 0 1.5rem 0;
+    }
+    .etf-poster {
+      max-width: var(--maxw);
+      width: 96vw;
+      border-radius: 24px;
+      background: linear-gradient(93deg, #faf1eb 0%, #ffebd1 100%);
+      color: var(--primary-dark);
+      box-shadow: 0 6px 40px -7px rgba(255,170,60,0.08);
+      padding: 2.18rem 1.21rem 2.3rem 1.21rem;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .etf-poster .poster-headline {
+      font-size: 2.05rem;
+      font-weight: bold;
+      letter-spacing: -1.4px;
+      color: var(--primary-dark);
+      margin: 0.2em 0 0.82em 0;
+      font-family: inherit;
+    }
+    .etf-poster .tools-flex {
+      display: flex; gap: 1.6rem; flex-wrap: wrap; justify-content: center;
+      margin: .5em auto 2.2em auto;
+    }
+    .etf-poster .tool-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px 0 rgba(244,110,70,0.05);
+      padding: .7em 1.1em;
+      max-width: 165px; min-width: 80px;
+      margin: 0.1em 0;
+      display:flex; flex-direction:column; align-items:center;
+      font-size: 0.97rem;
+    }
+    .etf-poster .tool-card .tool-icon{
+      font-size: 2rem;
+      margin-bottom:.27em;
+      color: var(--primary-dark);
+      background: none;
+    }
+    .etf-poster .tool-card .tool-title{
+      font-weight: 700;
+      font-size:1.05rem;
+      color:var(--primary-dark);
+      margin-bottom:.14em;
+    }
+    .etf-poster .tool-card .tool-desc{
+      font-size:0.97rem; color:#444; margin-bottom:.1em;
+    }
+    .etf-poster .cta-btn {
+      font-size: 1.17rem;
+      font-weight: 800;
+      padding: 0.8em 2.6em;
+      background: var(--primary);
+      color: #fff; border-radius: 30px; border: none;
+      outline: none; cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 2px 18px 0 rgba(255,121,70,.13);
+      transition: background .23s, color .23s, transform .13s;
+      margin-top: .4em; margin-bottom:0;
+      display: inline-block;
+    }
+    .etf-poster .cta-btn:hover {
+      background: var(--primary-dark);
+      color: #fff; transform: scale(1.045);
+    }
+    @media (max-width: 720px){
+      .impax-header, .news-card, .etf-poster { max-width: 100vw;}
+    }
+    @media (max-width: 530px){
+      .impax-logo-text { font-size: 1.16rem;}
+      .impax-tagline{ font-size:0.91rem;}
+      .news-title{font-size:1.13rem;margin:1rem .7rem 0.77rem .7rem;}
+      .news-meta-row,.social-row, .article-content{margin-left:.77em; margin-right:.77em}
+      .etf-poster{padding:1rem .2rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="sticky-header">
+    <div class="impax-header">
+      <div class="impax-logo-row">
+        <!-- No logo, just text -->
+        <span class="impax-logo-text">IMPAX<span class="impax-logo-text-orange">NEWS</span></span>
+      </div>
+      <div class="impax-tagline">NEWS THAT MAKES IMPACT</div>
+    </div>
+  </div>
+
+  <div class="main-wrap">
+    <div class="news-card">
+      <div class="news-img-wrap">
+        <img class="news-img-real" src="https://images.unsplash.com/photo-1464983953574-0892a716854b?fit=crop&w=900&q=80" alt="Students and teachers in a dim classroom with laptops showing urgent error screen and red cyberattack message, symbolizing crisis and alert." />
+        <div class="news-img-overlay"></div>
+        <div class="news-img-text">
+          <span>🚨 Massive School Cyberattack:<br>Canvas System Shuts<br><span style="color:#ff6600;font-size:1.05em;">Access Denied</span>
+          </span>
+        </div>
+      </div>
+      <h1 class="news-title">
+        Massive Cyberattack Disrupts Thousands of Schools Worldwide: The Canvas Learning Platform Hack
+      </h1>
+      <div class="news-meta-row">
+        <div class="news-meta"><span>🗓️</span> May 8, 2026</div>
+        <div class="news-meta"><span>🖥️</span> Technology</div>
+        <div class="news-meta critical"><span>⚠️</span> Critical</div>
+      </div>
+      <div class="social-row">
+        <button class="share-btn" aria-label="Share on X/Twitter"
+          onclick="window.open('https://twitter.com/intent/tweet?text=Massive%20Cyberattack%20Disrupts%20Thousands%20of%20Schools%20Worldwide%20-%20The%20Canvas%20Learning%20Platform%20Hack%20on%20IMPAXNEWS&url='+encodeURIComponent(window.location.href), '_blank')">🐦</button>
+        <button class="share-btn" aria-label="Share on Facebook"
+          onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(window.location.href), '_blank')">📘</button>
+        <button class="share-btn" aria-label="Copy Link"
+          onclick="navigator.clipboard.writeText(window.location.href);alert('Article link copied!')">🔗</button>
+        <button class="share-btn" aria-label="Share via WhatsApp"
+          onclick="window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(document.title + ' ' + window.location.href),'_blank')">💬</button>
+      </div>
+      <div class="article-content">
+        <p>
+          The cyberattack of the online learning system used by thousands of schools and millions of students across the United States was one of the largest cyberattacks in education. The outage to Instructure's Canvas learning management system occurred in early May 2026, just days before final exams. And it was the only school system affected at the time. With the education sector in crisis, the ShinyHunters hacker group came forward claiming to have data from more than 9,000 educational institutions. These compromised organizations ranged from Harvard to the Georgia public school districts as well as K-12 schools in the U.S. and around the world.
+        </p>
+        <p>
+          Panic set in among Canvas users as they were prevented from accessing their course materials. The hackers proceeded to make ransom demands to the 275 million users of Canvas. "If you want to get back access to all of your data (including finals and other exams), pay the price", the hackers stated. "The price will increase over time. May 12 is the last day we will give you the chance to retrieve your data." The ShinyHunters demanded ransom demands from each of the affected institutions by May 12. Are your users prepared for the next cyber attack?
+        </p>
+        <!-- Banner 1: PDF to Word Converter -->
+        <div class="promo-banner" style="background: linear-gradient(91deg, #ff9a57 0%, #fa9100 100%); color:#fff;">
+          <span class="banner-icon">📄</span>
+          <div class="promo-banner-content">
+            <h4>PDF to Word Converter – EasyToolsFlow.com</h4>
+            <ul>
+              <li>Loved by students for editing exam papers</li>
+              <li>Lifetime Free Access</li>
+              <li>Secure, No Data Stored</li>
+            </ul>
+            <a class="cta-banner-btn" href="https://easytoolsflow.com/pdf-to-word" target="_blank" rel="noopener">Convert PDF Now</a>
+          </div>
+        </div>
+        <p>
+          The crisis led to a mad scramble as students and professors tried to find alternative ways to complete final exams. In some instances, those impacted were forced to take finals on paper. The Canvas catastrophe was a chilling lesson for the dangers of putting so many eggs into the cloud and the consequences of neglecting cybersecurity.
+        </p>
+        <p>
+          The good news, according to Instructure, is that no financial information, such as passwords or Social Security numbers, were compromised. The bad news, however, was that names, email addresses and other personal details had been exposed and were potentially exposed given that Instructure had sent billions of internal messages during the previous year.
+        </p>
+        <!-- Banner 2: Image Compressor -->
+        <div class="promo-banner" style="background: linear-gradient(91deg, #ffd86c 0%, #ffab40 100%); color:#56411c;">
+          <span class="banner-icon" style="color:#e55c00;">🖼️</span>
+          <div class="promo-banner-content">
+            <h4>Image Compressor – EasyToolsFlow.com</h4>
+            <ul>
+              <li>Compress JPG/PNG images for assignments or sharing</li>
+              <li>Fastest Upload & Download Speed</li>
+              <li>No Signup Needed</li>
+            </ul>
+            <a class="cta-banner-btn" href="https://easytoolsflow.com/image-compressor" target="_blank" rel="noopener">Compress an Image</a>
+          </div>
+        </div>
+        <p>
+          According to one cybersecurity expert, the latest cyber attack is a wake-up call for our whole education system.
+        </p>
+        <p>
+          Canvas has now confirmed that nearly all functionality has been restored as of May 8th. But experts warn that without a system-wide effort to bolster defenses, we're likely to see more breaches. Next time, they say, the damage could be catastrophic.
+        </p>
+        <!-- Banner 3: Merge PDF -->
+        <div class="promo-banner" style="background: linear-gradient(89deg, #6bfaff 0%, #17b4ff 100%); color:#04364a;">
+          <span class="banner-icon" style="color:#17b4ff;">➕</span>
+          <div class="promo-banner-content">
+            <h4>Merge PDF Online – EasyToolsFlow.com</h4>
+            <ul>
+              <li>Combine multiple PDFs (like notes & assignments)</li>
+              <li>No Upload Limits, Free Forever</li>
+              <li>Secure Processing, No Registration</li>
+            </ul>
+            <a class="cta-banner-btn" href="https://easytoolsflow.com/merge-pdf" target="_blank" rel="noopener">Merge PDFs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- EasyToolsFlow Full Poster (NO LOGO) -->
+  <div class="etf-poster-wrap">
+    <div class="etf-poster">
+      <div class="poster-headline">
+        EASYTOOLS<span style="color:#ff6600;">FLOW.COM</span>
+      </div>
+      <div class="tools-flex">
+        <div class="tool-card">
+          <span class="tool-icon">📄</span>
+          <span class="tool-title">PDF to Word</span>
+          <div class="tool-desc">Convert PDFs to editable Word docs in seconds.</div>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">🖼️</span>
+          <span class="tool-title">Image Compressor</span>
+          <div class="tool-desc">Reduce image file size instantly, no signup.</div>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">➕</span>
+          <span class="tool-title">Merge PDF</span>
+          <div class="tool-desc">Unlimited PDF merging, fast & free forever.</div>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">🔒</span>
+          <span class="tool-title">Password Protect PDF</span>
+          <div class="tool-desc">Add/remove passwords from PDF files—1-click.</div>
+        </div>
+      </div>
+      <a class="cta-btn" href="https://easytoolsflow.com/" target="_blank" rel="noopener">Explore All Tools</a>
+    </div>
+  </div>
+</body>
+</html>
